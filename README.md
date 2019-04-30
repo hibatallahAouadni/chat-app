@@ -26,3 +26,8 @@ cd existing_git_repo
 git remote add git@gitlab.sifast.lan:hibatallah.aouadni/chat-app.git
 git push -u origin master
 ```
+
+## To launch the application
+```bash
+node chat-server/server.js
+```
