@@ -5,12 +5,18 @@ body {
 
 body {
   align-items: center;
+  font-size: 12px;
   padding: 35px 0;
   background-color: #f5f5f5;
 }
 
-.spacer {
-    padding-bottom: 50px;
+.title {
+  display: inline-block;
+  padding-bottom: 50px;
+}
+
+.btn--logout {
+  margin-top: 20px;
 }
 
 .form-control {
@@ -117,4 +123,80 @@ body {
   .form-label-group input:-ms-input-placeholder {
     color: #777;
   }
+}
+
+/* ---------------- messages -------------------------- */
+.msg-panel {
+  border-top: 1px solid #dcdada;
+  bottom: 0;
+  left: 0;
+  height: 70%;
+  position: fixed;
+  width: 100%;
+}
+
+.msg-panel__bloc {
+  box-sizing: border-box;
+  float: left;
+  height: 100%;
+  min-height: 1px;
+  padding: 20px;
+  position: relative;
+}
+
+.msg-panel__bloc--contact {
+  background: white;
+  padding: 20px 0;
+  width: 35%;
+}
+
+.msg-panel__bloc--msg {
+  background: #eae8e8;
+  width: 65%;
+}
+
+.contact-list, .msg-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.contact-list__item {
+  padding: 10px 15px;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #dadada;
+}
+
+.contact-list__item:hover, .contact-list__item:focus {
+  background: whitesmoke;
+}
+
+.contact-list__user {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+li.msg-list__item {
+  padding: 5px 0;
+}
+
+.msg-list__item--odd {
+  text-align: right;
+}
+
+.msg-list__name {
+  display: block;
+  font-size: 12px;
+  font-weight: bolder;
+  text-transform: capitalize;
+  padding: 0 10px 10px;
+}
+
+.msg-list__msg {
+  background: #33afd4;
+  border-radius: 15px;
+  font-size: 13px;
+  padding: 10px;
 }

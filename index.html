@@ -16,7 +16,8 @@
     </head>
     <body ng-app="ChatApp" ng-controller="ChatAppCtrl">
         <div class="container">
-            <h1 class="spacer">Welcome to our new chat-app</h1>
+            <h3 class="title">Welcome to our new chat-app</h3>
+            <button ng-show="getUserId() != 0 &amp;&amp; getUserId() != null" class="btn btn-info btn--logout pull-right" ng-click="logout()">Logout</button>
             <div ng-view></div>
         </div>
 

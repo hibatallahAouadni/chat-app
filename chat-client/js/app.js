@@ -4,14 +4,30 @@ var app = angular.module("ChatApp", [ "ngSanitize", "ngRoute", "ui.tinymce" ]);
 app.controller("ChatAppCtrl", function($scope, $location) {
     console.log("ChatAppCtrl");
 
+    $scope.userConnected = null;
+
     var users = [
         { id: "1", name: "Hiba", pseudo: "bipa", password: 'toto' },
         { id: "2", name: "Molka", pseudo: "moka", password: '123456' },
         { id: "3", name: "Mohamed", pseudo: "med87", password: '123456' }
     ];
 
-    // seesionStorage
-    var userId = null;
+    /* getUser functions */
+    $scope.getUserById = function(id) {
+        return users[id-1];
+    };
+    $scope.getUser = function(pseudo, password) {
+        for(var i in users) {
+            var user = users[i];
+            if(pseudo == user.pseudo && password == user.password) {
+                return user;
+            }
+        }
+        return null;
+    };
+
+    /* seesionStorage */
+    var userId = 0;
     $scope.getUserId = function() {
         if(!userId) {
             userId = sessionStorage.getItem('userId');
@@ -26,19 +42,25 @@ app.controller("ChatAppCtrl", function($scope, $location) {
     /* conncet function */
     $scope.connect = function() {
         console.log("connect");
-        console.log("pseudo: " + $scope.user.pseudo);
-        console.log("password: " + $scope.user.password);
         if($scope.user.pseudo && $scope.user.password) {
-            for(var i in users) {
-                var user = users[i];
-                if($scope.user.pseudo == user.pseudo && $scope.user.password == user.password) {
-                    console.log("hello " + user.name + ", you're connected!");
-                    $scope.setUserId(user.id);
-                    // to redirect page messagerie https://stackoverflow.com/questions/27941876/how-to-redirect-to-another-page-using-angularjs/27941966
-                    return;
-                }
+            var user = $scope.getUser($scope.user.pseudo, $scope.user.password);
+            if(user == null) {
+                console.log("Failed to connect! please check your infos.");
+                $location.path("/login");
+            } else {
+                $scope.setUserId(user.id);
+                $scope.userConnected = user;
+                console.log("hello " + user.name + ", you're connected!");
+                $location.path("/messagerie");
             }
         }
+    };
+
+    //logout function
+    $scope.logout = function() {
+        console.log("logout");
+        $scope.setUserId(0);
+        $location.path("/login");
     };
 
     /* navigation */
@@ -46,12 +68,15 @@ app.controller("ChatAppCtrl", function($scope, $location) {
         return $location.path();
     }, function(newPath) {
         var tabPath = newPath.split("/");
-        if(tabPath.length > 1) {
-            if(tabPath[1] == "login") {
-                console.log("login");
-            } else {
-                console.log("messagerie: " + $scope.getUserId());
-            }
+        console.log("$scope.getUserId(): " + $scope.getUserId());
+        
+        if($scope.getUserId() == 0 || $scope.getUserId() == null) {
+            console.log("login");
+            $location.path("/login");
+        } else {
+            $scope.userConnected = $scope.getUserById($scope.getUserId());
+            console.log("Hello " + $scope.userConnected.name + ", you're already connected ");
+            $location.path("/messagerie");
         }
     });
 

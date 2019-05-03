@@ -1,1 +1,31 @@
-Voilà la liste de votre messages !!!
+Bonjour {{ userConnected.name }}, Voilà la liste de votre messages !!!
+
+<div class="msg-panel">
+        <div class="msg-panel__bloc msg-panel__bloc--contact">
+            <h5>Messages</h5>
+            <ul class="contact-list">
+                <li class="contact-list__item" ng-click="">
+                    <span class="contact-list__user">toutou</span>
+                    <span class="contact-list__msg">bonjour, ça va?</span>
+                </li>
+            </ul>
+        </div>
+        <div class="msg-panel__bloc msg-panel__bloc--msg">
+            <ul class="msg-list">
+                <li class="msg-list__item">
+                    <span class="msg-list__name">toutou</span>
+                    <span class="msg-list__msg">bonjour, ça va?</span>
+                </li>
+                <li class="msg-list__item msg-list__item--odd">
+                    <span class="msg-list__name">moi</span>
+                    <span class="msg-list__msg">bonjour, ça va bien :)</span>
+                </li>
+            </ul>
+            <div class="bloc-editor">
+                <div class="bloc-editor__editor">
+                    <textarea class="form-control" id="message" rows="1"></textarea>
+                </div>
+                <button class="bloc-editor__sendBtn">send</button>
+            </div>
+        </div>
+</div>
