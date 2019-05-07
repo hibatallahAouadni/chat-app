@@ -1,11 +1,11 @@
-var app = angular.module("ChatApp", [ "ngSanitize", "ngRoute", "ui.tinymce" ]);
+var app = angular.module("ChatApp", [ "ngSanitize", "ngRoute", "ui.tinymce", 'LocalStorageModule', 'btford.socket-io' ]);
 
 /* ChatApp Controller */
-app.controller("ChatAppCtrl", function($scope, $location) {
+app.controller("ChatAppCtrl", function($scope, $location, localStorageService, SocketService) {
     console.log("ChatAppCtrl");
-
+    
+    /* declare users */
     $scope.userConnected = null;
-
     var users = [
         { id: "1", name: "Hiba", pseudo: "bipa", password: 'toto' },
         { id: "2", name: "Molka", pseudo: "moka", password: '123456' },
@@ -24,6 +24,18 @@ app.controller("ChatAppCtrl", function($scope, $location) {
             }
         }
         return null;
+    };
+
+    /* call socket */
+    SocketService.emit('room', { roomId: "temp" });
+    SocketService.on('listUsers', function(users) {
+        console.log(users);
+    });
+
+    /* send click */
+    $scope.sendMail = function(user) {
+        console.log("btn send " + user.name);
+        SocketService.emit("sendMail", user);
     };
 
     /* seesionStorage */
@@ -50,6 +62,7 @@ app.controller("ChatAppCtrl", function($scope, $location) {
             } else {
                 $scope.setUserId(user.id);
                 $scope.userConnected = user;
+                SocketService.emit("connected", user);
                 console.log("hello " + user.name + ", you're connected!");
                 $location.path("/messagerie");
             }
@@ -81,6 +94,13 @@ app.controller("ChatAppCtrl", function($scope, $location) {
     });
 
 });
+
+/* Socket Service */
+app.service('SocketService', ['socketFactory', function SocketService(socketFactory) {
+    return socketFactory({
+        ioSocket: io.connect('http://localhost')
+    });
+}]);
 
 /* Routes config */
 app.config(['$routeProvider', function($routeProvider){

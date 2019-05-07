@@ -10,6 +10,11 @@ body {
   background-color: #f5f5f5;
 }
 
+textarea {
+  overflow: auto;
+  resize: vertical;
+}
+
 .title {
   display: inline-block;
   padding-bottom: 50px;
@@ -195,8 +200,29 @@ li.msg-list__item {
 }
 
 .msg-list__msg {
-  background: #33afd4;
+  background: #bdbfbf;
   border-radius: 15px;
   font-size: 13px;
   padding: 10px;
+}
+
+.msg-list__item--odd .msg-list__msg {
+  background: #007bff;
+  color: white;
+}
+
+.bloc-editor {
+  margin: 25px 0 0;
+}
+
+.btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+  background-color: white;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
 }
