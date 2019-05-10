@@ -11,9 +11,10 @@ Bonjour {{ userConnected.name }}, Voilà la liste de votre messages !!!
     </div>
     <div class="msg-panel__bloc msg-panel__bloc--msg">
         <ul class="msg-list">
-            <li ng-repeat="(id, msg) in messages" ng-class="userConnected.pseudo == msg.sender ? 'msg-list__item msg-list__item--odd' : 'msg-list__item'">
+            <li ng-repeat="(id, msg) in messages" ng-class="userConnected.pseudo == msg.sender ? 'msg-list__item msg-list__item--odd' : 'msg-list__item'" id="#msg_{{id}}">
                 <span class="msg-list__name">{{messages[id-1].sender == msg.sender ? '' : userConnected.pseudo == msg.sender? 'moi' : msg.sender}}</span>
-                <span class="msg-list__msg">{{msg.message}}</span>
+                <span class="msg-list__msg" ng-click="hideShowDate(id)">{{msg.message}}</span>
+                <span class="msg-list__date hidden">{{msg.date | date:'HH:mm'}}</span>
             </li>
         </ul>
         <form class="bloc-editor" ng-submit="sendMail(userConnected)">

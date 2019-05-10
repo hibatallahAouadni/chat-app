@@ -2,7 +2,6 @@ var app = angular.module("ChatApp", [ "ngSanitize", "ngRoute", "ui.tinymce", 'Lo
 
 /* ChatApp Controller */
 app.controller("ChatAppCtrl", function($scope, $location, localStorageService, SocketService) {
-    console.log("ChatAppCtrl");
 
     /* declare messages */
     $scope.messages = [];
@@ -30,6 +29,17 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         }
         return null;
     };
+
+    /* hide & show date */
+    $scope.hideShowDate = function(id_msg) {
+        const selected_msg = document.getElementById('#msg_' + id_msg).getElementsByClassName("msg-list__date");
+        var date_msg = angular.element(selected_msg);
+        if(date_msg.hasClass('hidden')) {
+            date_msg.removeClass('hidden');
+        } else {
+            date_msg.addClass('hidden');
+        }
+    }
 
     /* send click */
     $scope.sendMail = function(user) {

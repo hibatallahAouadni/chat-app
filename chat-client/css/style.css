@@ -216,6 +216,11 @@ li.msg-list__item {
   padding: 10px;
 }
 
+.msg-list__date {
+  display: block;
+  padding: 10px 10px 0;
+}
+
 .msg-list__item--odd .msg-list__msg {
   background: #007bff;
   color: white;
