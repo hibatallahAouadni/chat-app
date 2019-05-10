@@ -27,8 +27,9 @@ textarea {
 .form-control {
     display: block;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
+    height: 40px;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
@@ -160,9 +161,18 @@ textarea {
   width: 65%;
 }
 
+.msg-panel__bloc--contact h5 {
+  padding-left: 20px;
+}
+
 .contact-list, .msg-list {
   list-style-type: none;
   padding: 0;
+  overflow-y: auto;
+}
+
+.msg-list {
+  height: 80%;
 }
 
 li.contact-list__item {
@@ -217,7 +227,7 @@ li.msg-list__item {
 
 .btn-outline-primary {
   color: #007bff;
-  border-color: #007bff;
+  border-color: #ced4da;
   background-color: white;
 }
 
@@ -226,3 +236,60 @@ li.msg-list__item {
   background-color: #007bff;
   border-color: #007bff;
 }
+
+/* ------------- input-group -------------- */
+.mb-3, .my-3 {
+  margin-bottom: 1rem!important;
+}
+
+.input-group {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  width: 100%;
+}
+
+.input-group>.custom-file, .input-group>.custom-select, .input-group>.form-control {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+}
+
+.input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-append, .input-group-prepend {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.input-group-append {
+  margin-left: -1px;
+}
+
+.input-group-append .btn, .input-group-prepend .btn {
+  position: relative;
+  z-index: 2;
+}
+
+.btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+.input-group>.input-group-append>.btn, .input-group>.input-group-append>.input-group-text, .input-group>.input-group-prepend:first-child>.btn:not(:first-child), .input-group>.input-group-prepend:first-child>.input-group-text:not(:first-child), .input-group>.input-group-prepend:not(:first-child)>.btn, .input-group>.input-group-prepend:not(:first-child)>.input-group-text {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+

@@ -3,9 +3,14 @@ var app = angular.module("ChatApp", [ "ngSanitize", "ngRoute", "ui.tinymce", 'Lo
 /* ChatApp Controller */
 app.controller("ChatAppCtrl", function($scope, $location, localStorageService, SocketService) {
     console.log("ChatAppCtrl");
+
+    /* declare messages */
+    $scope.messages = [];
+    $scope.messageSent = {};
     
     /* declare users */
     $scope.userConnected = null;
+    $scope.usersConnected = null;
     var users = [
         { id: "1", name: "Hiba", pseudo: "bipa", password: 'toto' },
         { id: "2", name: "Molka", pseudo: "moka", password: '123456' },
@@ -26,17 +31,20 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         return null;
     };
 
-    /* call socket */
-    SocketService.emit('room', { roomId: "temp" });
-    SocketService.on('listUsers', function(users) {
-        console.log(users);
-    });
-
     /* send click */
     $scope.sendMail = function(user) {
-        console.log("btn send " + user.name);
-        SocketService.emit("sendMail", user);
+        var message = {sender: user.pseudo, message: $scope.messageSent.msg, date: new Date()};
+        SocketService.emit("sendMail", message);
+        $scope.messageSent = {};
     };
+    
+    /* call socket */
+    SocketService.on('listUsers', function(users) {
+        $scope.usersConnected = users;
+    });
+    SocketService.on('listMessages', function(messages_sent) {
+        $scope.messages = messages_sent;
+    });
 
     /* seesionStorage */
     var userId = 0;
@@ -53,17 +61,15 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
 
     /* conncet function */
     $scope.connect = function() {
-        console.log("connect");
         if($scope.user.pseudo && $scope.user.password) {
             var user = $scope.getUser($scope.user.pseudo, $scope.user.password);
             if(user == null) {
-                console.log("Failed to connect! please check your infos.");
+                alert("Failed to connect! \nPlease check your infos.");
                 $location.path("/login");
             } else {
                 $scope.setUserId(user.id);
                 $scope.userConnected = user;
                 SocketService.emit("connected", user);
-                console.log("hello " + user.name + ", you're connected!");
                 $location.path("/messagerie");
             }
         }
@@ -71,8 +77,8 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
 
     //logout function
     $scope.logout = function() {
-        console.log("logout");
         $scope.setUserId(0);
+        SocketService.emit('logout', $scope.userConnected);
         $location.path("/login");
     };
 
@@ -81,30 +87,40 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         return $location.path();
     }, function(newPath) {
         var tabPath = newPath.split("/");
-        console.log("$scope.getUserId(): " + $scope.getUserId());
         
         if($scope.getUserId() == 0 || $scope.getUserId() == null) {
-            console.log("login");
             $location.path("/login");
         } else {
             $scope.userConnected = $scope.getUserById($scope.getUserId());
-            console.log("Hello " + $scope.userConnected.name + ", you're already connected ");
             $location.path("/messagerie");
         }
     });
 
 });
 
+/* ng-enter directive */
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 /* Socket Service */
 app.service('SocketService', ['socketFactory', function SocketService(socketFactory) {
     return socketFactory({
-        ioSocket: io.connect('http://localhost')
+        ioSocket: io.connect('http://172.16.0.89')
     });
 }]);
 
 /* Routes config */
 app.config(['$routeProvider', function($routeProvider){
-    console.log('routeProvider');
     $routeProvider
         .when('/messagerie', {templateUrl: 'chat-client/messages.html'})
         .when('/login', {templateUrl: 'chat-client/login.html'})
