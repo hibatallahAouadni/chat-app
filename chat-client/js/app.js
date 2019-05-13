@@ -39,7 +39,18 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         } else {
             date_msg.addClass('hidden');
         }
-    }
+    };
+
+    /* scroll to bottom */
+    $scope.scrollToBottom = function() {
+        var msg_list = document.getElementsByClassName('msg-list')[0];
+        var hasScroll = msg_list.scrollHeight > msg_list.clientHeight;
+        if(hasScroll) {
+            var msg_items = msg_list.getElementsByClassName('msg-list__msg');
+            var lastMsg = msg_items[msg_items.length-1];
+            lastMsg.scrollIntoView({behavior: 'smooth',block: 'start'});
+        }
+    };
 
     /* send click */
     $scope.sendMail = function(user) {
@@ -54,6 +65,9 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
     });
     SocketService.on('listMessages', function(messages_sent) {
         $scope.messages = messages_sent;
+        setTimeout(() => {
+            $scope.scrollToBottom();
+        }, 200);
     });
 
     /* seesionStorage */
