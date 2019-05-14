@@ -30,9 +30,11 @@ var io = require("socket.io")(server);
 var users_connected = [];
 var messages_sent =[];
 
-emitUsers = function(client, typeEmit, valueEmit) {
+emitUsers = function(client, typeEmit, valueEmit, emitUser = true) {
     client.broadcast.emit(typeEmit, valueEmit);
-    client.emit(typeEmit, valueEmit);
+    if(emitUser) {
+        client.emit(typeEmit, valueEmit);
+    }
 };
 
 searchUser = function(users, user) {
@@ -45,7 +47,6 @@ searchUser = function(users, user) {
 
 logout = function(client, users, user) {
     var user_index = searchUser(users, user);
-    console.log("user_index: " + user_index);
     users.splice(user_index, 1);
     emitUsers(client, 'listUsers', users);
     return users;
@@ -54,19 +55,17 @@ logout = function(client, users, user) {
 io.on('connection', function(client) {
 
     client.on('connected', function(user) {
-        console.log(user);
         users_connected.push(user);
         emitUsers(client, 'listUsers', users_connected);
         emitUsers(client, 'listMessages', messages_sent);
+        emitUsers(client, 'userConnected', user, false);
     });
 
     client.on('logout', function(user) {
-        console.log("logout");
         users_connected = logout(client, users_connected, user);
     });
 
     client.on('sendMail', function(msg) {
-        console.log(msg);
         messages_sent.push(msg);
         emitUsers(client, 'listMessages', messages_sent);
     });

@@ -32,7 +32,7 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
 
     /* hide & show date */
     $scope.hideShowDate = function(id_msg) {
-        const selected_msg = document.getElementById('#msg_' + id_msg).getElementsByClassName("msg-list__date");
+        const selected_msg = document.getElementById('msg_' + id_msg).getElementsByClassName("msg-list__date");
         var date_msg = angular.element(selected_msg);
         if(date_msg.hasClass('hidden')) {
             date_msg.removeClass('hidden');
@@ -65,9 +65,22 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
     });
     SocketService.on('listMessages', function(messages_sent) {
         $scope.messages = messages_sent;
-        setTimeout(() => {
-            $scope.scrollToBottom();
-        }, 200);
+        if ($scope.userConnected) {
+            setTimeout(() => {
+                $scope.scrollToBottom();
+            }, 200);
+        }
+    });
+    SocketService.on('userConnected', function(user) {
+        if ($scope.userConnected) {
+            var alert_container = document.getElementById('alert-container');
+            alert_container.innerHTML = '<div class="alert alert-info">' + user.name + ' a rejoint le Chat !</div>';
+            angular.element(alert_container).addClass('show');
+            setTimeout(() => {
+                angular.element(alert_container).removeClass('show');
+                alert_container.innerHTML = '';
+            }, 3000);
+        }
     });
 
     /* seesionStorage */

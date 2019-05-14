@@ -1,5 +1,9 @@
-Bonjour {{ userConnected.name }}, Voilà la liste de votre messages !!!
-
+<div class="welcome-panel">
+    Bonjour <strong>{{ userConnected.name }}</strong> ! Bienvenu à votre chatbox.
+</div>
+<div id="alert-container">
+    
+</div>
 <div class="msg-panel">
     <div class="msg-panel__bloc msg-panel__bloc--contact">
         <h5>Liste des connectés</h5>
@@ -11,7 +15,7 @@ Bonjour {{ userConnected.name }}, Voilà la liste de votre messages !!!
     </div>
     <div class="msg-panel__bloc msg-panel__bloc--msg">
         <ul class="msg-list">
-            <li ng-repeat="(id, msg) in messages" ng-class="userConnected.pseudo == msg.sender ? 'msg-list__item msg-list__item--odd' : 'msg-list__item'" id="#msg_{{id}}">
+            <li ng-repeat="(id, msg) in messages" ng-class="userConnected.pseudo == msg.sender ? 'msg-list__item msg-list__item--odd' : 'msg-list__item'" id="msg_{{id}}">
                 <span class="msg-list__name">{{messages[id-1].sender == msg.sender ? '' : userConnected.pseudo == msg.sender? 'moi' : msg.sender}}</span>
                 <span class="msg-list__msg" ng-click="hideShowDate(id)">{{msg.message}}</span>
                 <span class="msg-list__date hidden">{{msg.date | date:'HH:mm'}}</span>

@@ -24,6 +24,20 @@ textarea {
   margin-top: 20px;
 }
 
+.welcome-panel {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.alert-container {
+  opacity: 0;
+  transition: .4s all ease;
+}
+
+.alert-container.show {
+  opacity: 1;
+}
+
 .form-control {
     display: block;
     width: 100%;
