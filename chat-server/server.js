@@ -67,7 +67,7 @@ io.on('connection', function(client) {
 
     client.on('sendMail', function(msg) {
         messages_sent.push(msg);
-        emitUsers(client, 'listMessages', messages_sent);
+        emitUsers(client, 'listMessages', msg);
     });
 });
 

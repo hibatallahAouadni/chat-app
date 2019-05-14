@@ -64,7 +64,11 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         $scope.usersConnected = users;
     });
     SocketService.on('listMessages', function(messages_sent) {
-        $scope.messages = messages_sent;
+        if(messages_sent.sender) {
+            $scope.messages.push(messages_sent);
+        } else {
+            $scope.messages = messages_sent;
+        }
         if ($scope.userConnected) {
             setTimeout(() => {
                 $scope.scrollToBottom();
