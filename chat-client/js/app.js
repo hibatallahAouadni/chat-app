@@ -46,15 +46,25 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         var msg_list = document.getElementsByClassName('msg-list')[0];
         var hasScroll = msg_list.scrollHeight > msg_list.clientHeight;
         if(hasScroll) {
-            var msg_items = msg_list.getElementsByClassName('msg-list__msg');
+            var msg_items = msg_list.getElementsByClassName('msg-list__item');
             var lastMsg = msg_items[msg_items.length-1];
             lastMsg.scrollIntoView({behavior: 'smooth',block: 'start'});
         }
     };
 
+    /* insertPhoto function */
+    $scope.insertPhoto = function() {
+        setTimeout(() => {
+            console.log($scope.messageSent);
+            var message = {sender: $scope.userConnected.pseudo, message: null, image: $scope.messageSent.img, date: new Date()};
+            SocketService.emit("sendMail", message);
+        }, 1000);
+        $scope.messageSent = {};
+    }
+
     /* send click */
     $scope.sendMail = function(user) {
-        var message = {sender: user.pseudo, message: $scope.messageSent.msg, date: new Date()};
+        var message = {sender: user.pseudo, message: $scope.messageSent.msg, image: null, date: new Date()};
         SocketService.emit("sendMail", message);
         $scope.messageSent = {};
     };
@@ -137,6 +147,78 @@ app.controller("ChatAppCtrl", function($scope, $location, localStorageService, S
         }
     });
 
+});
+
+/* fileReader factory */
+app.factory("fileReader", function($q, $log) {
+    var onLoad = function(reader, deferred, scope) {
+      return function() {
+        scope.$apply(function() {
+          deferred.resolve(reader.result);
+        });
+      };
+    };
+ 
+    var onError = function(reader, deferred, scope) {
+      return function() {
+        scope.$apply(function() {
+          deferred.reject(reader.result);
+        });
+      };
+    };
+ 
+    var onProgress = function(reader, scope) {
+      return function(event) {
+        scope.$broadcast("fileProgress", {
+          total: event.total,
+          loaded: event.loaded
+        });
+      };
+    };
+ 
+    var getReader = function(deferred, scope) {
+      var reader = new FileReader();
+      reader.onload = onLoad(reader, deferred, scope);
+      reader.onerror = onError(reader, deferred, scope);
+      reader.onprogress = onProgress(reader, scope);
+      return reader;
+    };
+ 
+    var readAsDataURL = function(file, scope) {
+      var deferred = $q.defer();
+ 
+      var reader = getReader(deferred, scope);
+      reader.readAsDataURL(file);
+ 
+      return deferred.promise;
+    };
+ 
+    return {
+      readAsDataUrl: readAsDataURL
+    };
+});
+
+/* ng-FileSelect directive */
+app.directive("ngFileSelect", function(fileReader, $timeout) {
+    return {
+      scope: {
+        ngModel: "="
+      },
+      link: function($scope, el) {
+        function getFile(file) {
+          fileReader.readAsDataUrl(file, $scope).then(function(result) {
+            $timeout(function() {
+              $scope.ngModel = result;
+            });
+          });
+        }
+ 
+        el.bind("change", function(e) {
+          var file = (e.srcElement || e.target).files[0];
+          getFile(file);
+        });
+      }
+    };
 });
 
 /* ng-enter directive */

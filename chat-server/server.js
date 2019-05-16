@@ -69,6 +69,8 @@ io.on('connection', function(client) {
         messages_sent.push(msg);
         emitUsers(client, 'listMessages', msg);
     });
+
+    client.on('disconnect', function () { });
 });
 
 server.listen(PORT);

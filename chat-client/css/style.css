@@ -186,7 +186,7 @@ textarea {
 }
 
 .msg-list {
-  height: 80%;
+  height: 85%;
 }
 
 li.contact-list__item {
@@ -240,8 +240,12 @@ li.msg-list__item {
   color: white;
 }
 
-.bloc-editor {
+.msg-panel__form {
   margin: 25px 0 0;
+}
+
+.btn .fas {
+  font-size: 18px;
 }
 
 .btn-outline-primary {
@@ -310,5 +314,38 @@ li.msg-list__item {
 .input-group>.input-group-append>.btn, .input-group>.input-group-append>.input-group-text, .input-group>.input-group-prepend:first-child>.btn:not(:first-child), .input-group>.input-group-prepend:first-child>.input-group-text:not(:first-child), .input-group>.input-group-prepend:not(:first-child)>.btn, .input-group>.input-group-prepend:not(:first-child)>.input-group-text {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+/* ------------- custome file --------------- */
+.custom-file {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  margin-right: -1px;
+}
+
+.custom-file-input {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+}
+
+.custom-file-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  padding: 6px 12px;
+  line-height: 1.5;
+  font-size: 18px;
+  font-weight: 400;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
 }
 
