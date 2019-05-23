@@ -56,8 +56,8 @@ io.on('connection', function(client) {
 
     client.on('connected', function(user) {
         users_connected.push(user);
-        emitUsers(client, 'listUsers', users_connected);
-        emitUsers(client, 'listMessages', messages_sent);
+        emitUsers(client, 'listUsers', users_connected, true);
+        emitUsers(client, 'listMessages', messages_sent, true);
         emitUsers(client, 'userConnected', user, false);
     });
 
@@ -67,7 +67,7 @@ io.on('connection', function(client) {
 
     client.on('sendMail', function(msg) {
         messages_sent.push(msg);
-        emitUsers(client, 'listMessages', msg);
+        emitUsers(client, 'listMessages', msg, true);
     });
 
     client.on('disconnect', function () { });

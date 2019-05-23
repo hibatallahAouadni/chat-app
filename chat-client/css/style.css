@@ -21,7 +21,7 @@ textarea {
 }
 
 .btn--logout {
-  margin-top: 20px;
+  margin-top: -15px;
 }
 
 .welcome-panel {
@@ -321,7 +321,7 @@ li.msg-list__item {
   position: relative;
   display: inline-block;
   height: 100%;
-  margin-right: -1px;
+  margin-right: -2px;
 }
 
 .custom-file-input {
